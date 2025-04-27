@@ -190,32 +190,32 @@ button:hover {
   }
 }
 
-@keyframes collapsible-down {
+.collapsibleContent {
+  overflow: hidden;
+}
+
+.collapsibleContent[data-state="open"] {
+  animation: slideDown 100ms ease-out;
+}
+
+.collapsibleContent[data-state="closed"] {
+  animation: slideUp 100ms ease-in;
+}
+
+@keyframes slideDown {
   from {
     height: 0;
-    opacity: 0;
   }
   to {
     height: var(--radix-collapsible-content-height);
-    opacity: 1;
   }
 }
 
-@keyframes collapsible-up {
+@keyframes slideUp {
   from {
     height: var(--radix-collapsible-content-height);
-    opacity: 1;
   }
   to {
     height: 0;
-    opacity: 0;
   }
-}
-
-.animate-collapsible-down {
-  animation: collapsible-down 300ms ease-out;
-}
-
-.animate-collapsible-up {
-  animation: collapsible-up 300ms ease-out;
 }
