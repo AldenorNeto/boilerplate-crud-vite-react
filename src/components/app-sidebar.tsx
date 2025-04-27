@@ -1,193 +1,183 @@
-import {
-  BarChart3,
-  ChevronRight,
-  Home,
-  Package,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-
+import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarRail,
-} from "@/components/ui/sidebar";
+  BarChart3,
+  ChevronRight,
+  Menu,
+  MonitorSmartphone,
+  Package,
+  ShoppingCart,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
-  {
-    title: "Dashboard",
-    icon: Home,
-    href: "/",
-  },
   {
     title: "Products",
     icon: Package,
     items: [
-      {
-        title: "All Products",
-        href: "/products",
-      },
-      {
-        title: "Categories",
-        href: "/products/categories",
-      },
-      {
-        title: "Inventory",
-        href: "/products/inventory",
-      },
+      { title: "All Products", href: "/products" },
+      { title: "Categories", href: "/products/categories" },
+      { title: "Inventory", href: "/products/inventory" },
     ],
   },
   {
     title: "Orders",
     icon: ShoppingCart,
     items: [
-      {
-        title: "All Orders",
-        href: "/orders",
-      },
-      {
-        title: "Pending",
-        href: "/orders/pending",
-      },
-      {
-        title: "Completed",
-        href: "/orders/completed",
-      },
+      { title: "All Orders", href: "/orders" },
+      { title: "Pending", href: "/orders/pending" },
+      { title: "Completed", href: "/orders/completed" },
     ],
   },
   {
     title: "Customers",
     icon: Users,
     items: [
-      {
-        title: "All Customers",
-        href: "/customers",
-      },
-      {
-        title: "Segments",
-        href: "/customers/segments",
-      },
+      { title: "All Customers", href: "/customers" },
+      { title: "Segments", href: "/customers/segments" },
     ],
   },
   {
     title: "Analytics",
     icon: BarChart3,
     items: [
-      {
-        title: "Overview",
-        href: "/analytics",
-      },
-      {
-        title: "Reports",
-        href: "/analytics/reports",
-      },
+      { title: "Overview", href: "/analytics" },
+      { title: "Reports", href: "/analytics/reports" },
     ],
   },
 ];
 
 export function AppSidebar() {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  const collapsedMobile = collapsed && mobileOpen ? false : collapsed;
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link to="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Package className="size-4" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">CRUD App</span>
-                  <span className="text-xs text-muted-foreground">v1.0.0</span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarMenu>
-          {navigation.map((item) => {
-            const isActive = item.href ? pathname === item.href : false;
-            const hasSubItems = !!item.items?.length;
+    <>
+      <div className="lg:hidden fixed top-4 left-4 z-20">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setMobileOpen(!mobileOpen)}
+        >
+          <Menu className="w-6 h-6" />
+        </Button>
+      </div>
 
-            if (!hasSubItems) {
-              return (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isActive}>
-                    <Link to={item.href || "#"}>
-                      <item.icon className="size-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              );
-            }
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 lg:hidden z-20"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
 
-            const isSubActive = item.items?.some(
-              (subItem) => pathname === subItem.href
-            );
-
-            return (
-              <Collapsible
-                key={item.title}
-                defaultOpen={isSubActive}
-                className="group/collapsible"
-              >
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton>
-                      <item.icon className="size-4" />
-                      <span>{item.title}</span>
-                      <ChevronRight className="ml-auto size-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items?.map((subItem) => {
-                        const isSubItemActive = pathname === subItem.href;
-                        return (
-                          <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton
-                              asChild
-                              isActive={isSubItemActive}
-                            >
-                              <Link to={subItem.href}>{subItem.title}</Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        );
-                      })}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            );
-          })}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter>
-        <div className="p-4 text-xs text-muted-foreground">
-          <p>© 2024 CRUD App</p>
+      <div
+        className={`flex flex-col bg-background h-screen border-r fixed lg:relative z-30 transition-all duration-300 ease-in-out ${
+          collapsedMobile ? "w-16" : "w-64"
+        } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        <div className="flex items-center justify-between p-2 border-b h-14">
+          <Link to="/" className="flex items-center gap-2 overflow-hidden">
+            <div className="flex aspect-square w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shrink-0">
+              <MonitorSmartphone className="w-4 h-4" />
+            </div>
+            {!collapsedMobile && (
+              <div className="flex flex-col">
+                <span className="font-semibold leading-none">SignalGRE</span>
+                <span className="text-xs text-muted-foreground">v1.0.0</span>
+              </div>
+            )}
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(!collapsedMobile)}
+            className="hidden lg:inline-flex shrink-0"
+          >
+            <Menu className="w-6 h-6" />
+          </Button>
         </div>
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+
+        <div className="flex-1 overflow-y-auto py-2">
+          <nav>
+            {navigation.map((item) => (
+              <div key={item.title} className="px-2">
+                {item.items ? (
+                  <Collapsible
+                    defaultOpen={item.items.some(
+                      (sub) => pathname === sub.href
+                    )}
+                  >
+                    <div className="group/collapsible">
+                      <CollapsibleTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start h-10 px-2"
+                        >
+                          <item.icon className="w-4 h-4 shrink-0" />
+                          {!collapsedMobile && (
+                            <>
+                              <span className="ml-2">{item.title}</span>
+                              <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                            </>
+                          )}
+                        </Button>
+                      </CollapsibleTrigger>
+
+                      <CollapsibleContent className="pl-2">
+                        {item.items.map((sub) => (
+                          <Button
+                            key={sub.title}
+                            variant={
+                              pathname === sub.href ? "secondary" : "ghost"
+                            }
+                            asChild
+                            className="w-full justify-start h-8 px-2"
+                          >
+                            <Link to={sub.href}>
+                              {!collapsedMobile && (
+                                <span className="ml-4">{sub.title}</span>
+                              )}
+                            </Link>
+                          </Button>
+                        ))}
+                      </CollapsibleContent>
+                    </div>
+                  </Collapsible>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start h-10 px-2"
+                    asChild
+                  >
+                    <div>
+                      <item.icon className="w-4 h-4" />
+                      {!collapsedMobile && (
+                        <span className="ml-2">{item.title}</span>
+                      )}
+                    </div>
+                  </Button>
+                )}
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        {!collapsedMobile && (
+          <div className="p-4 text-xs text-muted-foreground border-t">
+            <p>© TI4.0 SignalGRE</p>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

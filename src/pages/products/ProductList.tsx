@@ -7,10 +7,10 @@ export default function ProductList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Products</h1>
+        <h1 className="text-xl font-semibold">Produtos</h1>
         <Button asChild>
-          <Link to="/products/new">
-            <Plus className="mr-2 h-4 w-4" /> Add Product
+          <Link to="/products/new" className="bg-white border ">
+            <Plus className="mr-2 h-4 w-4" /> Add Produto
           </Link>
         </Button>
       </div>
