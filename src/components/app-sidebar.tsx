@@ -107,7 +107,9 @@ export function AppSidebar() {
             {!collapsedMobile && (
               <div className="flex flex-col">
                 <span className="font-semibold leading-none">SignalGRE</span>
-                <span className="text-xs text-muted-foreground">v1.0.0</span>
+                <span className="text-xs text-muted-foreground">
+                  v{__APP_VERSION__}
+                </span>
               </div>
             )}
           </Link>
