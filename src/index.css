@@ -67,6 +67,11 @@ a:hover {
   color: #535bf2;
 }
 
+html {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   display: flex;
@@ -85,21 +90,10 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
 button:hover {
   border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -194,4 +188,34 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.animate-collapsible-down {
+  animation: collapsible-down 300ms ease-out;
+}
+
+.animate-collapsible-up {
+  animation: collapsible-up 300ms ease-out;
 }

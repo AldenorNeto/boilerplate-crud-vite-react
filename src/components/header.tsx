@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
-import { Bell } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
 export function Header() {
@@ -22,10 +20,6 @@ export function Header() {
         {getPageTitle()}
       </div>
       <div className="ml-auto flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Bell className="h-5 w-5" />
-          <span className="sr-only">Notifications</span>
-        </Button>
         <UserNav />
       </div>
     </header>

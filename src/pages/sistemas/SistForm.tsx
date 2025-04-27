@@ -25,59 +25,64 @@ import {
 } from "../../components/ui/select";
 import { Textarea } from "../../components/ui/textarea";
 
+type Status = "ativo" | "dev" | "inativo";
+
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Product name must be at least 2 characters.",
+  nome: z.string().min(2, {
+    message: "O nome do sistema deve ter pelo menos 2 caracteres.",
   }),
-  description: z.string().optional(),
-  category: z.string({
-    required_error: "Please select a category.",
+  descricao: z.string().optional(),
+  ambiente: z.string({
+    required_error: "Por favor selecione um ambiente.",
   }),
-  price: z.coerce.number().positive({
-    message: "Price must be a positive number.",
+  consumo: z.coerce.number().min(0).max(100, {
+    message: "O consumo deve ser entre 0% e 100%.",
   }),
-  stock: z.coerce
+  consumidores: z.coerce
     .number()
     .int({
-      message: "Stock must be a whole number.",
+      message: "O número de consumidores deve ser inteiro.",
     })
     .nonnegative({
-      message: "Stock cannot be negative.",
+      message: "O número de consumidores não pode ser negativo.",
     }),
+  status: z.enum(["ativo", "dev", "inativo"]),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const sampleProduct = {
-  id: "PROD-001",
-  name: "Wireless Headphones",
-  description: "High-quality wireless headphones with noise cancellation.",
-  category: "Electronics",
-  price: 129.99,
-  stock: 45,
-  status: "in-stock",
+const sampleSystem = {
+  id: "SIS-001",
+  nome: "Sistema de Autenticação",
+  descricao: "Sistema responsável pela autenticação de usuários",
+  ambiente: "Produção",
+  consumo: 75,
+  consumidores: 1500,
+  status: "ativo",
 };
 
-export default function ProductForm() {
+export default function FormularioSistema() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const isNewProduct = id === "new";
+  const isNewSystem = id === "novo";
 
-  const defaultValues = !isNewProduct
+  const defaultValues = !isNewSystem
     ? {
-        name: sampleProduct.name,
-        description: sampleProduct.description,
-        category: sampleProduct.category,
-        price: sampleProduct.price,
-        stock: sampleProduct.stock,
+        nome: sampleSystem.nome,
+        descricao: sampleSystem.descricao,
+        ambiente: sampleSystem.ambiente,
+        consumo: sampleSystem.consumo,
+        consumidores: sampleSystem.consumidores,
+        status: sampleSystem.status as Status,
       }
     : {
-        name: "",
-        description: "",
-        category: "",
-        price: 0,
-        stock: 0,
+        nome: "",
+        descricao: "",
+        ambiente: "",
+        consumo: 0,
+        consumidores: 0,
+        status: "ativo" as Status,
       };
 
   const form = useForm<FormValues>({
@@ -86,24 +91,22 @@ export default function ProductForm() {
   });
 
   useEffect(() => {
-    if (!isNewProduct) {
+    if (!isNewSystem) {
       form.reset({
-        name: sampleProduct.name,
-        description: sampleProduct.description,
-        category: sampleProduct.category,
-        price: sampleProduct.price,
-        stock: sampleProduct.stock,
+        ...sampleSystem,
+        status: sampleSystem.status as Status,
       });
     } else {
       form.reset({
-        name: "",
-        description: "",
-        category: "",
-        price: 0,
-        stock: 0,
+        nome: "",
+        descricao: "",
+        ambiente: "",
+        consumo: 0,
+        consumidores: 0,
+        status: "ativo",
       });
     }
-  }, [id, form, isNewProduct]);
+  }, [id, form, isNewSystem]);
 
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
@@ -113,13 +116,13 @@ export default function ProductForm() {
     console.log(values);
     setIsSubmitting(false);
 
-    navigate("/products");
+    navigate("/cadastro");
   }
 
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">
-        {isNewProduct ? "Add New Product" : "Edit Product"}
+        {isNewSystem ? "Cadastrar Novo Sistema" : "Editar Sistema"}
       </h1>
       <Card>
         <CardContent className="pt-6">
@@ -128,12 +131,15 @@ export default function ProductForm() {
               <div className="grid gap-6 md:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="nome"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Name</FormLabel>
+                      <FormLabel>Nome do Sistema</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter product name" {...field} />
+                        <Input
+                          placeholder="Digite o nome do sistema"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -141,27 +147,28 @@ export default function ProductForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="ambiente"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel>Ambiente</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a category" />
+                            <SelectValue placeholder="Selecione um ambiente" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Electronics">
-                            Electronics
+                          <SelectItem value="Produção">Produção</SelectItem>
+                          <SelectItem value="Homologação">
+                            Homologação
                           </SelectItem>
-                          <SelectItem value="Fitness">Fitness</SelectItem>
-                          <SelectItem value="Home">Home</SelectItem>
-                          <SelectItem value="Fashion">Fashion</SelectItem>
-                          <SelectItem value="Books">Books</SelectItem>
+                          <SelectItem value="Desenvolvimento">
+                            Desenvolvimento
+                          </SelectItem>
+                          <SelectItem value="Testes">Testes</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -170,35 +177,63 @@ export default function ProductForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="price"
+                  name="consumo"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Price</FormLabel>
+                      <FormLabel>Consumo (%)</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
-                          step="0.01"
-                          placeholder="0.00"
+                          min="0"
+                          max="100"
+                          placeholder="0"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Enter the price in USD.</FormDescription>
+                      <FormDescription>
+                        Informe o consumo percentual do sistema
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="stock"
+                  name="consumidores"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Stock</FormLabel>
+                      <FormLabel>Endpoints Ativos</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="0" {...field} />
                       </FormControl>
                       <FormDescription>
-                        Enter the available quantity.
+                        Número de sistemas/clientes consumidores
                       </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ativo">Ativo</SelectItem>
+                          <SelectItem value="dev">Em Dev</SelectItem>
+                          <SelectItem value="inativo">Inativo</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -206,13 +241,13 @@ export default function ProductForm() {
               </div>
               <FormField
                 control={form.control}
-                name="description"
+                name="descricao"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Descrição</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter product description"
+                        placeholder="Descreva as funcionalidades do sistema"
                         className="min-h-[120px]"
                         {...field}
                       />
@@ -225,17 +260,17 @@ export default function ProductForm() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => navigate("/products")}
+                  onClick={() => navigate("/cadastro")}
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting
-                    ? "Saving..."
-                    : !isNewProduct
-                    ? "Update Product"
-                    : "Create Product"}
+                    ? "Salvando..."
+                    : !isNewSystem
+                    ? "Atualizar Sistema"
+                    : "Cadastrar Sistema"}
                 </Button>
               </div>
             </form>

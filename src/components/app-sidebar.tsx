@@ -5,51 +5,37 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-  BarChart3,
+  Bell,
   ChevronRight,
+  ListPlus,
   Menu,
   MonitorSmartphone,
-  Package,
-  ShoppingCart,
-  Users,
+  Search,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   {
-    title: "Products",
-    icon: Package,
+    title: "Cadastro",
+    icon: ListPlus,
     items: [
-      { title: "All Products", href: "/products" },
-      { title: "Categories", href: "/products/categories" },
-      { title: "Inventory", href: "/products/inventory" },
+      { title: "Sistemas", href: "/cadastro" },
+      { title: "Perfil", href: "/cadastro/perfil" },
     ],
   },
   {
-    title: "Orders",
-    icon: ShoppingCart,
+    title: "Consultas",
+    icon: Search,
     items: [
-      { title: "All Orders", href: "/orders" },
-      { title: "Pending", href: "/orders/pending" },
-      { title: "Completed", href: "/orders/completed" },
+      { title: "Histórico Notificações", href: "/consultas" },
+      { title: "Dispositivos Online", href: "/consultas/dispOnline" },
     ],
   },
   {
-    title: "Customers",
-    icon: Users,
-    items: [
-      { title: "All Customers", href: "/customers" },
-      { title: "Segments", href: "/customers/segments" },
-    ],
-  },
-  {
-    title: "Analytics",
-    icon: BarChart3,
-    items: [
-      { title: "Overview", href: "/analytics" },
-      { title: "Reports", href: "/analytics/reports" },
-    ],
+    title: "Notificação",
+    icon: Bell,
+    items: [{ title: "Notificação Manual", href: "/notificacao" }],
   },
 ];
 
@@ -81,7 +67,7 @@ export function AppSidebar() {
 
       <div
         className={`flex flex-col bg-background h-screen border-r fixed lg:relative z-30 transition-all duration-300 ease-in-out ${
-          collapsedMobile ? "w-16" : "w-64"
+          collapsedMobile ? "w-14" : "max-w-52 w-52 min-w-52"
         } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
@@ -124,12 +110,12 @@ export function AppSidebar() {
                           className="w-full justify-start h-10 px-2"
                         >
                           <item.icon className="w-4 h-4 shrink-0" />
-                          {!collapsedMobile && (
+                          {!collapsedMobile ? (
                             <>
                               <span className="ml-2">{item.title}</span>
                               <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
                             </>
-                          )}
+                          ) : null}
                         </Button>
                       </CollapsibleTrigger>
 

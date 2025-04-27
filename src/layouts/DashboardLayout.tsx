@@ -7,10 +7,12 @@ export default function DashboardLayout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="">
         <Header />
-        <main className="flex-1 p-4 md:p-6">
-          <Outlet />
+        <main className="flex flex-1 max-h-[calc(100vh-56px)]">
+          <div className="p-4 w-[calc(100%-5px)] overflow-auto">
+            <Outlet />
+          </div>
         </main>
       </SidebarInset>
     </SidebarProvider>
