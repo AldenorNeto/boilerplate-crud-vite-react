@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import Comum from "./pages/comum";
 import Gradista from "./pages/gradista";
-import Comum from "./pages/notificacao/NotificacaoManual";
 import Revisor from "./pages/revisor";
 
 function App() {
@@ -8,11 +8,11 @@ function App() {
     <Routes>
       <Route path="/">
         <Route index element={<Comum />} />
-        <Route path="revisor">
-          <Route index element={<Revisor />} />
-        </Route>
         <Route path="gradista">
           <Route index element={<Gradista />} />
+        </Route>
+        <Route path="revisor">
+          <Route index element={<Revisor />} />
         </Route>
       </Route>
     </Routes>
