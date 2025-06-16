@@ -37,6 +37,7 @@ export default function Revisor() {
     totalCaixas: 76,
     totalParesCaixa: 12,
     grade: "023239",
+    amostra: "https://images.tcdn.com.br/img/img_prod/963117/chinelo_ipanema_solar_26979_30018563_1_28d98da105f2b670cc79e5ca79533c9f.jpg"
   };
 
   return (
@@ -106,8 +107,8 @@ export default function Revisor() {
           </div>
           <div className="flex items-center justify-center">
             <img
-              src="https://images.tcdn.com.br/img/img_prod/963117/chinelo_ipanema_solar_26979_30018563_1_28d98da105f2b670cc79e5ca79533c9f.jpg"
-              alt="Chinelo Azul"
+              src={data.amostra}
+              alt="amostra"
               className="h-40 rounded-sm shadow-md shadow-gray-500/15"
             />
           </div>
