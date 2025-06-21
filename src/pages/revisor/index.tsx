@@ -5,6 +5,7 @@ interface GradistaProps {
 }
 
 export default function Revisor({ data }: GradistaProps) {
+  const { gradista, revisor } = data;
   return (
     <div className="shadow-md shadow-gray-600/20 rounded-lg p-4 w-full">
       <div className="overflow-x-auto">
@@ -26,7 +27,7 @@ export default function Revisor({ data }: GradistaProps) {
                 colSpan={3}
                 className="px-2 py-1 text-center border-2 border-white text-white bg-[#225f9e]"
               >
-                {data.SSCC}
+                {revisor.SSCC}
               </td>
             </tr>
             <tr className="">
@@ -46,7 +47,7 @@ export default function Revisor({ data }: GradistaProps) {
                 colSpan={1}
                 className="py-1 text-center border-2 border-white"
               >
-                {data.totalCaixas}
+                {revisor.totalCaixas}
               </td>
               <td
                 colSpan={2}
@@ -58,7 +59,7 @@ export default function Revisor({ data }: GradistaProps) {
                 colSpan={1}
                 className="py-1 text-center border-2 border-white"
               >
-                {data.totalParesCaixa}
+                {revisor.totalParesCaixa}
               </td>
               <td
                 colSpan={1}
@@ -70,7 +71,7 @@ export default function Revisor({ data }: GradistaProps) {
                 colSpan={2}
                 className="py-1 text-center border-2 border-white"
               >
-                {data.grade}
+                {revisor.grade}
               </td>
             </tr>
             <tr className="bg-slate-200">
@@ -87,7 +88,7 @@ export default function Revisor({ data }: GradistaProps) {
         <table className="min-w-full border-collapse">
           <colgroup>
             <col className="w-96" />
-            {data.tamanho.map(() => (
+            {gradista.columns.map(() => (
               <col className="w-96" />
             ))}
           </colgroup>
@@ -96,15 +97,20 @@ export default function Revisor({ data }: GradistaProps) {
               <td className="py-1 font-normal text-center border-2 bg-slate-300 border-white">
                 Tamanho
               </td>
-              {data.tamanho.map((v) => (
-                <td className="py-1 text-center border-2 border-white">{v}</td>
+              {gradista.columns.map((v) => (
+                <td className="py-1 text-center border-2 border-white">
+                  {v.name}
+                </td>
               ))}
             </tr>
             <tr className="bg-slate-200">
               <td className="py-1 font-normal text-center border-2 bg-slate-300 border-white">
                 Qtd. pares
               </td>
-              {(data.grades.find((v) => v.revisao)?.values ?? []).map((v) => (
+              {(
+                gradista.rows.find((v) => v.id === revisor.revisao)?.values ??
+                []
+              ).map((v) => (
                 <td className="py-1 font-semibold text-center border-2 bg-[#6c96c4] border-white">
                   {v}
                 </td>

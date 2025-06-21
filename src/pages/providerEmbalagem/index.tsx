@@ -1,6 +1,7 @@
 import { Data } from '@/App';
+import chinelaIcons from '@/assets/chinelaIcons.png';
 import grendeneLogo from '@/assets/grendene-logo-0.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ProviderProps {
   title: string;
@@ -9,7 +10,9 @@ interface ProviderProps {
 }
 
 export default function Provider({ title, children, data }: ProviderProps) {
+  const { produto } = data;
   const [timestamp, setTimestamp] = useState('');
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -25,9 +28,14 @@ export default function Provider({ title, children, data }: ProviderProps) {
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
-
     return () => clearInterval(interval);
   }, []);
+
+  const handleImageError = () => {
+    if (imgRef.current) {
+      imgRef.current.src = chinelaIcons;
+    }
+  };
 
   return (
     <div className="p-4 min-h-screen flex flex-col justify-between items-center w-[150vh]">
@@ -54,13 +62,13 @@ export default function Provider({ title, children, data }: ProviderProps) {
                     <tr className="bg-slate-300">
                       <td className="text-center px-3 py-2 text-sm">Produto</td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.descricao}
+                        {produto.descricao}
                       </td>
                       <td className="text-center px-3 py-2 text-sm">
                         Equipamento
                       </td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.equipamento}
+                        {produto.equipamento}
                       </td>
                     </tr>
                     <tr className="bg-slate-300">
@@ -68,23 +76,23 @@ export default function Provider({ title, children, data }: ProviderProps) {
                         Programa
                       </td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.programa} - {data.documento}
+                        {produto.programa} - {produto.documento}
                       </td>
                       <td className="text-center px-3 py-2 text-sm">Cor</td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.cor}
+                        {produto.cor}
                       </td>
                     </tr>
                     <tr className="bg-slate-300">
                       <td className="text-center px-3 py-2 text-sm">PE</td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.pE}
+                        {produto.pE}
                       </td>
                       <td className="text-center px-3 py-2 text-sm">
                         Padrão Crono
                       </td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.padraoCrono}
+                        {produto.padraoCrono}
                       </td>
                     </tr>
                   </tbody>
@@ -92,10 +100,13 @@ export default function Provider({ title, children, data }: ProviderProps) {
               </div>
             </div>
           </div>
+
           <div className="flex items-center justify-center">
             <img
-              src={data.amostra}
+              ref={imgRef}
+              src={produto.amostra}
               alt="amostra"
+              onError={handleImageError}
               className="h-40 rounded-sm shadow-md shadow-gray-500/15"
             />
           </div>
@@ -105,7 +116,6 @@ export default function Provider({ title, children, data }: ProviderProps) {
       <div className="shadow-md shadow-gray-600/20 rounded-lg p-4 w-full">
         {children}
       </div>
-
       <footer className="text-center text-xs text-[#3d4199] mt-6">
         Desenvolvido por Tecnologia de Manufatura
       </footer>

@@ -1,4 +1,5 @@
 import { Data } from '@/App';
+import { somatorio } from '@/utils/somatorio';
 
 interface GradistaProps {
   data: Data;
@@ -10,13 +11,14 @@ function splitInTwo<T>(arr: T[]): [T[], T[]] {
 }
 
 export default function Gradista({ data }: GradistaProps) {
+  const { gradista } = data;
   const formatOrderTime = (min: number) => {
     const h = Math.floor(min / 60);
     const m = min % 60;
     return `${h}hs ${m}min`;
   };
 
-  const [firstSizes, secondSizes] = splitInTwo(data.tamanho);
+  const [firstSizes, secondSizes] = splitInTwo(gradista.columns);
 
   return (
     <div className="overflow-x-auto">
@@ -32,7 +34,7 @@ export default function Gradista({ data }: GradistaProps) {
             <th className="px-2 py-1 "></th>
             <th className="px-2 py-1 "></th>
             <th
-              colSpan={data.tamanho.length}
+              colSpan={gradista.columns.length}
               className="px-2 py-2  font-semibold text-gray-900 bg-slate-300 border-2 border-white"
             >
               Composição das Grades
@@ -66,7 +68,7 @@ export default function Gradista({ data }: GradistaProps) {
                 key={`fsz-${code}`}
                 className="px-2 py-1 text-center border-2 border-white"
               >
-                {code}
+                {code.name}
               </th>
             ))}
             {secondSizes.map((code) => (
@@ -74,18 +76,18 @@ export default function Gradista({ data }: GradistaProps) {
                 key={`ssz-${code}`}
                 className="px-2 py-1 text-center border-2 border-white"
               >
-                {code}
+                {code.name}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.grades.map((row, idx) => {
+          {gradista.rows.map((row, idx) => {
             const [firstGradista, secondGradista] = splitInTwo(row.values);
             return (
               <tr key={idx}>
                 <td className="px-2 py-1 text-center border-2 border-white bg-slate-200">
-                  {row.cod}
+                  {row.id}
                 </td>
                 <td className="px-2 py-1 text-center border-2 border-white bg-slate-200">
                   {row.qtd}
@@ -116,22 +118,22 @@ export default function Gradista({ data }: GradistaProps) {
               Total pares num
             </td>
             <td className="px-2 py-1 font-normal text-center border-2 border-white">
-              {data.foot.totalPairsNum}
+              {somatorio(gradista.rows.map((row) => row.qtd))}
             </td>
-            {data.foot.firstSums.map((sum, i) => (
+            {firstSizes.map((sum, i) => (
               <td
                 key={`fs${i}`}
                 className="px-2 py-1 text-center border-2 border-white"
               >
-                {sum}
+                {sum.total}
               </td>
             ))}
-            {data.foot.secondSums.map((sum, i) => (
+            {secondSizes.map((sum, i) => (
               <td
                 key={`ss${i}`}
                 className="px-2 py-1 text-center border-2 border-white"
               >
-                {sum || ''}
+                {sum.total}
               </td>
             ))}
           </tr>
@@ -156,7 +158,7 @@ export default function Gradista({ data }: GradistaProps) {
               colSpan={3}
               className="px-2 py-1 text-center border-2 border-white"
             >
-              {data.foot.totalPairs}
+              {somatorio(gradista.columns.map((col) => col.total))}
             </td>
             <td
               colSpan={2}
@@ -168,7 +170,7 @@ export default function Gradista({ data }: GradistaProps) {
               colSpan={3}
               className="px-2 py-1 text-center border-2 border-white"
             >
-              {formatOrderTime(data.foot.orderTime)}
+              {formatOrderTime(gradista.tempoOrdemMinutos)}
             </td>
           </tr>
         </tfoot>
