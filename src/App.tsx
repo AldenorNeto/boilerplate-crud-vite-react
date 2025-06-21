@@ -1,20 +1,25 @@
-import { Route, Routes } from "react-router-dom";
-import Comum from "./pages/comum";
-import Gradista from "./pages/gradista";
-import Provider from "./pages/providerEmbalagem";
-import Revisor from "./pages/revisor";
+import { Route, Routes } from 'react-router-dom';
+import Comum from './pages/comum';
+import Gradista from './pages/gradista';
+import Provider from './pages/providerEmbalagem';
+import Revisor from './pages/revisor';
 
 export interface Data {
-  productInfo: ProductInfo[];
   SSCC: string;
   tamanho: string[];
-  qtdPares: number[];
   totalCaixas: number;
   totalParesCaixa: number;
   grade: string;
   grades: Grade[];
   foot: Foot;
   amostra: string;
+  descricao: string;
+  equipamento: string;
+  programa: string;
+  documento: string;
+  cor: string;
+  pE: string;
+  padraoCrono: string;
 }
 
 export interface ProductInfo {
@@ -23,7 +28,7 @@ export interface ProductInfo {
 }
 
 export interface Grade {
-  grade: string;
+  cod: string;
   qtd: number;
   values: number[];
   revisao: boolean;
@@ -38,48 +43,46 @@ export interface Foot {
 }
 
 const data = {
-  productInfo: [
-    { label: "Produto", value: "MELISSA SUN DOWNTOWN AD" },
-    { label: "Equipamento", value: "S7E01" },
-    { label: "Programa", value: "709017 - 22" },
-    { label: "Cor", value: "AZUL CANETA" },
-    { label: "PE", value: "28" },
-    { label: "Padrão Crono", value: "191" },
-  ],
-  SSCC: "00478902440731642807",
-  tamanho: ["0234", "0256", "0278", "0293", "0312", "0334", "0350"],
-  qtdPares: [1, 2, 2, 2, 2, 1, 1, 1],
+  descricao: 'MELISSA SUN DOWNTOWN AD',
+  equipamento: 'S7E01',
+  programa: '709017',
+  documento: '22',
+  cor: 'AZUL CANETA',
+  pE: '28',
+  padraoCrono: '191',
+  SSCC: '00478902440731642807',
+  tamanho: ['0234', '0256', '0278', '0293', '0312', '0334', '0350', '0360'],
   totalCaixas: 76,
   totalParesCaixa: 12,
-  grade: "023239",
+  grade: '023239',
   grades: [
-    { grade: "08030", qtd: 1, values: [1, 2, 2, 2, 2, 1, 1, 1], revisao: true },
+    { cod: '08030', qtd: 1, values: [1, 2, 2, 2, 2, 1, 1, 1], revisao: true },
     {
-      grade: "08853",
+      cod: '08853',
       qtd: 2,
       values: [1, 2, 2, 2, 2, 2, 2, 1],
       revisao: false,
     },
     {
-      grade: "08429",
+      cod: '08429',
       qtd: 3,
       values: [1, 2, 2, 2, 2, 2, 1, 0],
       revisao: false,
     },
     {
-      grade: "20955",
+      cod: '20955',
       qtd: 3,
       values: [1, 3, 3, 2, 2, 1, 0, 0],
       revisao: false,
     },
     {
-      grade: "08031",
+      cod: '08031',
       qtd: 4,
       values: [2, 2, 2, 2, 2, 2, 0, 0],
       revisao: false,
     },
     {
-      grade: "20955",
+      cod: '20955',
       qtd: 15,
       values: [1, 2, 3, 2, 2, 2, 0, 0],
       revisao: false,
@@ -93,7 +96,7 @@ const data = {
     orderTime: 10,
   },
   amostra:
-    "https://images.tcdn.com.br/img/img_prod/963117/chinelo_ipanema_solar_26979_30018563_1_28d98da105f2b670cc79e5ca79533c9f.jpg",
+    'https://images.tcdn.com.br/img/img_prod/963117/chinelo_ipanema_solar_26979_30018563_1_28d98da105f2b670cc79e5ca79533c9f.jpg',
 };
 
 function App() {

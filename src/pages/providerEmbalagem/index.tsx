@@ -1,6 +1,6 @@
-import { Data } from "@/App";
-import grendeneLogo from "@/assets/grendene-logo-0.png";
-import { useEffect, useState } from "react";
+import { Data } from '@/App';
+import grendeneLogo from '@/assets/grendene-logo-0.png';
+import { useEffect, useState } from 'react';
 
 interface ProviderProps {
   title: string;
@@ -9,17 +9,17 @@ interface ProviderProps {
 }
 
 export default function Provider({ title, children, data }: ProviderProps) {
-  const [timestamp, setTimestamp] = useState("");
+  const [timestamp, setTimestamp] = useState('');
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const formatted = new Intl.DateTimeFormat("pt-BR", {
-        dateStyle: "short",
-        timeStyle: "medium",
+      const formatted = new Intl.DateTimeFormat('pt-BR', {
+        dateStyle: 'short',
+        timeStyle: 'medium',
       })
         .format(now)
-        .replace(",", "");
+        .replace(',', '');
       setTimestamp(formatted);
     };
 
@@ -38,9 +38,7 @@ export default function Provider({ title, children, data }: ProviderProps) {
             Sistema Embalagem
           </div>
         </div>
-        <span className="w-3/12 flex font-semibold">
-          {timestamp}
-        </span>
+        <span className="w-3/12 flex font-semibold">{timestamp}</span>
       </div>
 
       <div className="w-full flex justify-center">
@@ -56,13 +54,13 @@ export default function Provider({ title, children, data }: ProviderProps) {
                     <tr className="bg-slate-300">
                       <td className="text-center px-3 py-2 text-sm">Produto</td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.productInfo[0].value}
+                        {data.descricao}
                       </td>
                       <td className="text-center px-3 py-2 text-sm">
                         Equipamento
                       </td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.productInfo[1].value}
+                        {data.equipamento}
                       </td>
                     </tr>
                     <tr className="bg-slate-300">
@@ -70,23 +68,23 @@ export default function Provider({ title, children, data }: ProviderProps) {
                         Programa
                       </td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.productInfo[2].value}
+                        {data.programa} - {data.documento}
                       </td>
                       <td className="text-center px-3 py-2 text-sm">Cor</td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.productInfo[3].value}
+                        {data.cor}
                       </td>
                     </tr>
                     <tr className="bg-slate-300">
                       <td className="text-center px-3 py-2 text-sm">PE</td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.productInfo[4].value}
+                        {data.pE}
                       </td>
                       <td className="text-center px-3 py-2 text-sm">
                         Padrão Crono
                       </td>
                       <td className="text-center bg-slate-200 px-3 py-2 font-bold text-sm">
-                        {data.productInfo[5].value}
+                        {data.padraoCrono}
                       </td>
                     </tr>
                   </tbody>

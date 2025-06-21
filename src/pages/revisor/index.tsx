@@ -1,4 +1,4 @@
-import { Data } from "@/App";
+import { Data } from '@/App';
 
 interface GradistaProps {
   data: Data;
@@ -104,7 +104,7 @@ export default function Revisor({ data }: GradistaProps) {
               <td className="py-1 font-normal text-center border-2 bg-slate-300 border-white">
                 Qtd. pares
               </td>
-              {data.qtdPares.map((v) => (
+              {(data.grades.find((v) => v.revisao)?.values ?? []).map((v) => (
                 <td className="py-1 font-semibold text-center border-2 bg-[#6c96c4] border-white">
                   {v}
                 </td>

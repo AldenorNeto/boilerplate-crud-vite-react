@@ -1,4 +1,4 @@
-import { Data } from "@/App";
+import { Data } from '@/App';
 
 interface GradistaProps {
   data: Data;
@@ -24,8 +24,8 @@ export default function Gradista({ data }: GradistaProps) {
         <colgroup>
           <col className="w-32" />
           <col className="w-20" />
-          <col span={4} />
-          <col span={4} />
+          <col span={firstSizes.length} />
+          <col span={secondSizes.length} />
         </colgroup>
         <thead>
           <tr>
@@ -85,7 +85,7 @@ export default function Gradista({ data }: GradistaProps) {
             return (
               <tr key={idx}>
                 <td className="px-2 py-1 text-center border-2 border-white bg-slate-200">
-                  {row.grade}
+                  {row.cod}
                 </td>
                 <td className="px-2 py-1 text-center border-2 border-white bg-slate-200">
                   {row.qtd}
@@ -103,7 +103,7 @@ export default function Gradista({ data }: GradistaProps) {
                     key={`s${i}`}
                     className="px-2 py-1 text-center border-2 border-white bg-[#6c96c4] font-semibold"
                   >
-                    {num || ""}
+                    {num || ''}
                   </td>
                 ))}
               </tr>
@@ -131,7 +131,7 @@ export default function Gradista({ data }: GradistaProps) {
                 key={`ss${i}`}
                 className="px-2 py-1 text-center border-2 border-white"
               >
-                {sum || ""}
+                {sum || ''}
               </td>
             ))}
           </tr>
